@@ -46,6 +46,7 @@ present a per-org token directly.
 
 | Command | Options | What it does |
 |---|---|---|
+| `treg` | `--json` | no arguments: the registry, your account, the active team and role, its balance, its own tools, and the next commands to run (`help[]`). Every line is best-effort and it always exits 0 |
 | `treg config` | `--base-url URL` | show or set the endpoint (prints base URL, email, active org, logged-in) — use `treg org ls` for the full org list |
 | `treg login` | _(none)_ | GitHub browser sign-in (register-or-login), stores one identity token |
 | `treg login` | `--email EMAIL` | email one-time-code sign-in (register-or-login); prompts for the code. A server that requires a browser check finishes the sign-in in the browser instead |
@@ -569,7 +570,7 @@ unapproved, failed and retired tools never appear. The share page's run log show
 day for 30 days: time, outcome, duration, steps, units and the price paid, and never who called,
 the inputs, or the output. The dashboard has the same two switches under Hub → a tool → Listing.
 
-The folder may carry a fifth file, `data.csv` (≤ 50 MB): the script reads it as `ctx.data`. A
+The folder may carry a fifth file, `data.csv` (≤ 5 MB): the script reads it as `ctx.data`. A
 script gets `ctx.inputs`, `ctx.call(target, {method, query, body, headers})`, `ctx.charge(usd, note)`,
 `ctx.csv(text)`, `ctx.data`, `ctx.log(text)`; `target` is a catalog id, one of your own tools as `<tool>/<path>`,
 or a full URL under such a tool's base URL. Never paste a credential into a script: register it

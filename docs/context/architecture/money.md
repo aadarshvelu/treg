@@ -736,6 +736,15 @@ cooldown stamped in the DB *before* the charge so a second web worker sees it, a
 limit, and an idempotency key derived from the threshold crossing - so a burst of concurrent calls
 that all notice the low balance produces exactly ONE charge.
 
+The stamp is a compare-and-set, not a plain write: `attempt_auto_topup` updates
+`autotopup_last_attempt_at` only where it still holds the value the attempt read. `_lock` is per
+process, so web processes and instances that read the same old stamp all reach this UPDATE; only
+the first matches, and the rest return `cooldown` before any Stripe call. Without it, every process
+drove the same invoice at once, Stripe answered the losers with 409, each 409 counted as a failure,
+and auto top-up switched itself off while the one real payment went through. A 409 that still
+arrives (`stripe_busy`) means Stripe is running another request on the invoice; it is logged and is
+not a failed attempt.
+
 The wait between charges (`billing.autotopup_wait_s`) is one hour after a FAILED charge
 (`autotopup_cooldown_s`), else one hour divided by the team's `autotopup_max_per_hour` (0 = the
 default `autotopup_default_per_hour`, 5; 1-60 via `POST /billing/autotopup` `per_hour`, `treg topup
@@ -752,8 +761,8 @@ and an invoice archive are the org's money, not a member's preference.
 `GET /orgs/{id}/balance` is different, and deliberately so. Any **member** sees the figure and the
 in-flight holds; the **funding detail** (credit blocks, the ledger) stays admin+. It used to be
 admin-only, which meant a machine identity could not read the balance it was spending - while every
-402 already hands the caller `balance_micro`, and both `llms.txt` and `skill.md` tell an agent to run
-`treg balance` after a call. Refusing the number there while shipping it in an error was incoherent.
+402 already hands the caller `balance_micro`, and `skill.md` points an agent at `treg balance` when
+the balance runs out. Refusing the number there while shipping it in an error was incoherent.
 (Reported by Jason, 2026-08-07.)
 
 The 402 also carries `autotopup_enabled` and an `auto top-up:` line in `message`. Off → the one
