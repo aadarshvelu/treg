@@ -15,7 +15,7 @@ proposed_capabilities:
 
 endpoints:
   - id: hirehouse.jobs.search
-    # platform_auth: anonymous  # enable with `verified:` after catalog_verify.py passes live
+    platform_auth: anonymous
     capability: jobs.search
     platform: jobs
     scope: any_account
@@ -34,11 +34,13 @@ endpoints:
       note: "All filters are optional. Page with cursor until nextCursor is null. Apply at each job's applyUrl."
     test_request: {queryParams: {query: engineer, limit: 2, source: treg}}
     cost: &free_cost {type: free, value: 0, currency: USD, unit: call, source: docs, source_url: "https://hirehouse.xyz/developers", checked: '2026-10-20', confidence: documented, note: "HireHouse's public jobs API is free and needs no key"}
+    verified: '2026-10-21'
     added: '2026-10-20'
+    example_response: examples/hirehouse.jobs.search.json
     docs_url: https://hirehouse.xyz/developers
 
   - id: hirehouse.jobs.get
-    # platform_auth: anonymous  # enable with `verified:` after catalog_verify.py passes live
+    platform_auth: anonymous
     capability: jobs.get
     platform: jobs
     scope: any_account
@@ -53,11 +55,13 @@ endpoints:
         source: {type: string, required: false, note: "attribution for apply links; send treg", example: treg}
     test_request: {pathParams: {id: "04e2ae58-f330-48a4-9b22-e8190ed70481"}, queryParams: {source: treg}}
     cost: *free_cost
+    verified: '2026-10-21'
     added: '2026-10-20'
+    example_response: examples/hirehouse.jobs.get.json
     docs_url: https://hirehouse.xyz/developers
 
   - id: hirehouse.jobs.compare
-    # platform_auth: anonymous  # enable with `verified:` after catalog_verify.py passes live
+    platform_auth: anonymous
     capability: jobs.compare
     platform: jobs
     scope: any_account
@@ -71,5 +75,7 @@ endpoints:
         source: {type: string, required: false, note: "attribution for apply links; send treg", example: treg}
     test_request: {queryParams: {ids: "04e2ae58-f330-48a4-9b22-e8190ed70481,6efc6a16-b0e0-49c6-8f0a-ea962891d672", source: treg}}
     cost: *free_cost
+    verified: '2026-10-21'
     added: '2026-10-20'
+    example_response: examples/hirehouse.jobs.compare.json
     docs_url: https://hirehouse.xyz/developers
