@@ -51,7 +51,7 @@ endpoints:
         id: {type: string, required: true, note: "job uuid from hirehouse.jobs.search"}
       queryParams:
         source: {type: string, required: false, note: "attribution for apply links; send treg", example: treg}
-    test_request: {pathParams: {id: "00000000-0000-0000-0000-000000000000"}, queryParams: {source: treg}}
+    test_request: {pathParams: {id: "04e2ae58-f330-48a4-9b22-e8190ed70481"}, queryParams: {source: treg}}
     cost: *free_cost
     added: '2026-10-20'
     docs_url: https://hirehouse.xyz/developers
@@ -69,7 +69,7 @@ endpoints:
       queryParams:
         ids: {type: string, required: true, note: "2-5 job uuids, comma-separated"}
         source: {type: string, required: false, note: "attribution for apply links; send treg", example: treg}
-    test_request: {queryParams: {ids: "00000000-0000-0000-0000-000000000000,00000000-0000-0000-0000-000000000001", source: treg}}
+    test_request: {queryParams: {ids: "04e2ae58-f330-48a4-9b22-e8190ed70481,6efc6a16-b0e0-49c6-8f0a-ea962891d672", source: treg}}
     cost: *free_cost
     added: '2026-10-20'
     docs_url: https://hirehouse.xyz/developers
